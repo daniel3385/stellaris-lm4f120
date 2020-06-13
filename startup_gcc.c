@@ -47,7 +47,7 @@ extern int main(void);
 // Reserve space for the system stack.
 //
 //*****************************************************************************
-static unsigned long pulStack[128];
+static unsigned long pulStack[64];
 
 //*****************************************************************************
 //
@@ -256,12 +256,6 @@ ResetISR(void)
     //
     // Zero fill the bss segment.
     //
-
-    for(pulDest = &_bss; pulDest < &_ebss; )
-    {
-        *pulDest++ = 0;
-    }
-/*
     __asm("    ldr     r0, =_bss\n"
           "    ldr     r1, =_ebss\n"
           "    mov     r2, #0\n"
@@ -271,7 +265,7 @@ ResetISR(void)
           "        it      lt\n"
           "        strlt   r2, [r0], #4\n"
           "        blt     zero_loop");
-*/
+
     //
     // Enable the floating-point unit.  This must be done here to handle the
     // case where main() uses floating-point and the function prologue saves
